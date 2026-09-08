@@ -1,0 +1,13 @@
+# Nix / Flakes build outputs
+/result
+/result-*
+
+# Persistent evironment / direnv cache
+/.direnv/
+
+# Local configuration overrides (if used in your project)
+.nix-local
+
+# Nix-shell / Devshell history or state files
+.bash_history
+.devshell/
