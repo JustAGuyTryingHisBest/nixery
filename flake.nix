@@ -6,19 +6,18 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
-    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?ref=nixos-unstable&shallow=1";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+    zig = {
+      url = "github:mitchellh/zig-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        # To import an internal flake module: ./other.nix
-        # To import an external flake module:
-        #   1. Add foo to inputs
-        #   2. Add foo as a parameter to the outputs function
-        #   3. Add here: foo.flakeModule
-
       ];
       systems = [
         "x86_64-linux"
@@ -36,17 +35,16 @@
           ...
         }:
         {
-          packages = import ./nur { inherit pkgs; };
+          packages = import ./nur {
+            inherit pkgs;
+            zigPackages = inputs'.zig.packages;
+          };
           devShells.default = pkgs.mkShell {
             packages = [ pkgs.nixfmt ];
           };
           formatter = pkgs.nixfmt-tree;
         };
       flake = {
-        # The usual flake attributes can be defined here, including system-
-        # agnostic ones like nixosModule and system-enumerating ones, although
-        # those are more easily expressed in perSystem.
-
       };
     };
 }
