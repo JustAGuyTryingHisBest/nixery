@@ -17,7 +17,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [ zigHook ];
 
-  zigBuildFlags = [ "-Dgit-revision=v${finalAttrs.version}" ];
+  zigBuildFlags = [
+    "-Dgit-revision=v${finalAttrs.version}"
+    "-Doptimize=ReleaseSmall"
+  ];
 
   meta = {
     description = "A small Haskell-like scripting shell";
